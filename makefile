@@ -2,9 +2,9 @@
 # Makefile Options
 # ----------------------------
 
-NAME = CELESTE
+NAME = CELESTEX
 ICON = icon.png
-DESCRIPTION = "Celeste Classic"
+DESCRIPTION = "Celeste Classic Xbox Controller"
 COMPRESSED = YES
 ARCHIVED = YES
 

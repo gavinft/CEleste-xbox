@@ -16,6 +16,8 @@
 #include "profiler.h"
 #include "practice.h"
 
+#include "controller.h"
+
 #define BASE_X ((LCD_WIDTH - 128 * 2) / 4)
 #define BASE_Y ((LCD_HEIGHT - 128 * 2) / 4)
 
@@ -303,9 +305,28 @@ void pal(int c0, int c1, int p) {
 
 
 bool btn(uint8_t index) {
-    kb_lkey_t keys[6] = {kb_KeyLeft, kb_KeyRight, kb_KeyUp, kb_KeyDown, kb_Key2nd, kb_KeyAlpha};
+    // 0 - kb_KeyLeft
+    // 1 - kb_KeyRight
+    // 2 - kb_KeyUp
+    // 3 - kb_KeyDown
+    // 4 - kb_Key2nd
+    // 5 - kb_KeyAlpha
+
     if(index > 5) return false;
-    return kb_IsDown(keys[index]);
+    switch (index) {
+        case 0:
+            return xbc_packet.lx < -CONTROLLER_DEADZONE;
+        case 1:
+            return xbc_packet.lx > CONTROLLER_DEADZONE;
+        case 2:
+            return xbc_packet.ly > CONTROLLER_DEADZONE;
+        case 3:
+            return xbc_packet.ly < -CONTROLLER_DEADZONE;
+        case 4:
+            return (xbc_packet.digital_buttons & XBC_A | xbc_packet.digital_buttons & XBC_B) != 0;
+        case 5:
+            return (xbc_packet.digital_buttons & XBC_X | xbc_packet.digital_buttons & XBC_Y) != 0;
+    }
 }
 
 int rnd(int max) {
